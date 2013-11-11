@@ -89,6 +89,13 @@ public class DragNDropCursorAdapter extends SimpleCursorAdapter implements DragN
 	}
 
 	@Override
+	public void onItemHover(DragNDropListView parent, View view,
+			int startPosition, int endPosition, long id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void onItemDrop(DragNDropListView parent, View view, int startPosition, int endPosition, long id) {
 		int position = mPosition[startPosition];
 		

@@ -36,6 +36,7 @@ public class DragNDropListView extends ListView {
 	public static interface OnItemDragNDropListener {
 		public void onItemDrag(DragNDropListView parent, View view, int position, long id);
 		public void onItemDrop(DragNDropListView parent, View view, int startPosition, int endPosition, long id);
+		public void onItemHover(DragNDropListView parent, View view, int startPosition, int endPosition, long id);
 	}
 	
 	boolean mDragMode;
@@ -145,6 +146,14 @@ public class DragNDropListView extends ListView {
 				
 				break;
 			case MotionEvent.ACTION_MOVE:
+				if (mStartPosition != INVALID_POSITION) {
+					// check if the position is a header/footer
+					int actualPosition =  pointToPosition(x,y);
+					if (actualPosition > (getCount() - getFooterViewsCount()) - 1)
+						actualPosition = INVALID_POSITION;
+
+					hoverPosition(mStartPosition - getFirstVisiblePosition(), actualPosition);
+				}
 				drag(0, y);
 				break;
 			case MotionEvent.ACTION_CANCEL:
@@ -167,6 +176,29 @@ public class DragNDropListView extends ListView {
 		return true;
 	}
 	
+	private void hoverPosition(int childIndex, int actualPosition) {
+		View item = getChildAt(childIndex);
+
+        if (actualPosition != INVALID_POSITION) {
+            long id = getItemIdAtPosition(mStartPosition);
+
+            if (mDragNDropListener != null)
+                mDragNDropListener.onItemDrop(this, item, mStartPosition, actualPosition, id);
+
+            Adapter adapter = getAdapter();
+            DragNDropAdapter dndAdapter;
+
+            // if exists a footer/header we have our adapter wrapped
+            if (adapter instanceof WrapperListAdapter) {
+                dndAdapter = (DragNDropAdapter)((WrapperListAdapter)adapter).getWrappedAdapter();
+            } else {
+                dndAdapter = (DragNDropAdapter)adapter;
+            }
+
+            dndAdapter.onItemHover(this, item, mStartPosition, actualPosition, id);
+        }
+	}
+
 	/**
 	 * Prepare the drag view.
 	 * 
@@ -222,8 +254,6 @@ public class DragNDropListView extends ListView {
 
         mWm.addView(v, mWindowParams);
         mDragView = v;
-        
-        item.setVisibility(View.INVISIBLE);
         item.invalidate(); // We have not changed anything else.
 	}
 	
