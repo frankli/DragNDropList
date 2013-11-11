@@ -100,9 +100,9 @@ public abstract class BaseDragDropAdapter extends BaseAdapter implements
 		return getItemAtRawPosition(mPosition[position]);
 	}
 
-	abstract long getItemIdAtRawPosition(int i);
+	public abstract long getItemIdAtRawPosition(int i);
 
-	abstract Object getItemAtRawPosition(int i);
+	public abstract Object getItemAtRawPosition(int i);
 
-	abstract View getViewAtRawPosition(int i, View convertView, ViewGroup parent);
+	public abstract View getViewAtRawPosition(int i, View convertView, ViewGroup parent);
 }

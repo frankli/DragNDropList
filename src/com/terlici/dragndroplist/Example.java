@@ -36,12 +36,12 @@ public class Example extends Activity {
 			}
 
 			@Override
-			long getItemIdAtRawPosition(int i) {
+			public long getItemIdAtRawPosition(int i) {
 				return i;
 			}
 
 			@Override
-			Object getItemAtRawPosition(int i) {
+			public Object getItemAtRawPosition(int i) {
 				return null;
 			}
 
