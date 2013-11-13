@@ -13,6 +13,12 @@ public class Example extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		DragNDropListView list = (DragNDropListView) findViewById(android.R.id.list);
+		list.addHeaderView(new TextView(this));
+		list.addHeaderView(new TextView(this));
+		list.addHeaderView(new TextView(this));
+		list.addFooterView(new TextView(this));
+		list.addFooterView(new TextView(this));
+		list.addFooterView(new TextView(this));
 		list.setDragNDropAdapter(new BaseDragDropAdapter() {
 			
 			@Override
