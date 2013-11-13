@@ -22,12 +22,10 @@ public class Example extends Activity {
 		list.setDragNDropAdapter(new BaseDragDropAdapter() {
 			
 			@Override
-			public View getViewAtRawPosition(int position, View convertView, ViewGroup arg2) {
-				if (convertView == null) {
-					convertView = getLayoutInflater().inflate(R.layout.list_item, null);
-				}
-				((TextView)convertView.findViewById(R.id.text_line1)).setText("" + position);
-				((TextView)convertView.findViewById(R.id.text_line2)).setText("" + position);
+			public View getViewAtRawPosition(int raw, int actual, View convertView, ViewGroup arg2) {
+				convertView = getLayoutInflater().inflate(R.layout.list_item, null);
+				((TextView)convertView.findViewById(R.id.text_line1)).setText("" + raw);
+				((TextView)convertView.findViewById(R.id.text_line2)).setText("" + raw);
 				return convertView;
 			}
 			
@@ -42,13 +40,20 @@ public class Example extends Activity {
 			}
 
 			@Override
-			public long getItemIdAtRawPosition(int i) {
-				return i;
+			public long getItemIdAtRawPosition(int raw, int actual) {
+				return raw;
 			}
 
 			@Override
-			public Object getItemAtRawPosition(int i) {
+			public Object getItemAtRawPosition(int raw, int actual) {
 				return null;
+			}
+
+			@Override
+			public View getEmptySpaceView(int position, View convertView,
+					ViewGroup parent) {
+				convertView = getLayoutInflater().inflate(R.layout.list_item, null);
+				return convertView;
 			}
 
 		});

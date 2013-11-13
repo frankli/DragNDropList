@@ -80,29 +80,38 @@ public abstract class BaseDragDropAdapter extends BaseAdapter implements
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
-		View view = getViewAtRawPosition(mPosition[position], convertView, parent);
 		if (position == lastEndPosition) {
-			view.setBackgroundColor(0);
-		} else {
-			view.setBackgroundColor(0x66ffffff);
+			return getEmptySpaceView(position, convertView, parent);
 		}
-		Log.i("test", "get view " + position + " " + lastEndPosition + " " + view.getVisibility());
+		View view = getViewAtRawPosition(mPosition[position], position, convertView, parent);
 		return view;
 	}
 
 	@Override
 	public final long getItemId(int position) {
-		return getItemIdAtRawPosition(mPosition[position]);
+		return getItemIdAtRawPosition(mPosition[position], position);
 	}
 
 	@Override
 	public final Object getItem(int position) {
-		return getItemAtRawPosition(mPosition[position]);
+		return getItemAtRawPosition(mPosition[position], position);
+	}
+	
+	protected int getActuallPositionFromRaw(int raw) {
+		for (int i = 0; i < mPosition.length; i ++) {
+			if (mPosition[i] == raw) {
+				return i;
+			}
+		}
+		return raw;
 	}
 
-	public abstract long getItemIdAtRawPosition(int i);
+	public abstract long getItemIdAtRawPosition(int raw, int actual);
 
-	public abstract Object getItemAtRawPosition(int i);
+	public abstract Object getItemAtRawPosition(int raw, int actual);
 
-	public abstract View getViewAtRawPosition(int i, View convertView, ViewGroup parent);
+	public abstract View getViewAtRawPosition(int raw, int actual, View convertView, ViewGroup parent);
+	
+	public abstract View getEmptySpaceView(int position, View convertView, ViewGroup parent);
+
 }
