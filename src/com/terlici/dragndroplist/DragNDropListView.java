@@ -24,12 +24,10 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Adapter;
 import android.widget.WrapperListAdapter;
-
-import com.terlici.dragndroplist.DragNDropAdapter;
 
 public class DragNDropListView extends ListView {
 	
@@ -181,9 +179,6 @@ public class DragNDropListView extends ListView {
 
         if (actualPosition != INVALID_POSITION) {
             long id = getItemIdAtPosition(mStartPosition);
-
-            if (mDragNDropListener != null)
-                mDragNDropListener.onItemDrop(this, item, mStartPosition, actualPosition, id);
 
             Adapter adapter = getAdapter();
             DragNDropAdapter dndAdapter;
