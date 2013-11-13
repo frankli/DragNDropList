@@ -164,7 +164,7 @@ public class DragNDropListView extends ListView {
 					// check if the position is a header/footer
 					int actualPosition =  pointToPosition(x,y);
 					if (actualPosition > (getCount() - getFooterViewsCount()) - 1)
-						actualPosition = INVALID_POSITION;
+						actualPosition = (getCount() - getFooterViewsCount()) - 1;
 
 					stopDrag(mStartPosition - getFirstVisiblePosition(), actualPosition);
 				}
