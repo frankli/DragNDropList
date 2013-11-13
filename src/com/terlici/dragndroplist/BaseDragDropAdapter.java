@@ -39,17 +39,13 @@ public abstract class BaseDragDropAdapter extends BaseAdapter implements
 		if (endPosition != lastEndPosition) {
 			lastEndPosition = endPosition;
 			Log.i("test", "hover " + startPosition + " " + endPosition + " " + id);
-			for (int i = 0; i < mPosition.length; i++) {
-				mPosition[i] = startPositionArray[i];
-			}
-			int position = mPosition[startPosition];
-
+			int position = startPositionArray[startPosition];
 			if (startPosition < endPosition)
 				for (int i = startPosition; i < endPosition; ++i)
-					mPosition[i] = mPosition[i + 1];
+					mPosition[i] = startPositionArray[i + 1];
 			else if (endPosition < startPosition)
 				for (int i = startPosition; i > endPosition; --i)
-					mPosition[i] = mPosition[i - 1];
+					mPosition[i] = startPositionArray[i - 1];
 
 			mPosition[endPosition] = position;
 			parent.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -62,17 +58,14 @@ public abstract class BaseDragDropAdapter extends BaseAdapter implements
 	public void onItemDrop(DragNDropListView parent, View view,
 			int startPosition, int endPosition, long id) {
 		// swap start and end position
-		for (int i = 0; i < mPosition.length; i++) {
-			mPosition[i] = startPositionArray[i];
-		}
-		int position = mPosition[startPosition];
+		int position = startPositionArray[startPosition];
 
 		if (startPosition < endPosition)
 			for (int i = startPosition; i < endPosition; ++i)
-				mPosition[i] = mPosition[i + 1];
+				mPosition[i] = startPositionArray[i + 1];
 		else if (endPosition < startPosition)
 			for (int i = startPosition; i > endPosition; --i)
-				mPosition[i] = mPosition[i - 1];
+				mPosition[i] = startPositionArray[i - 1];
 
 		mPosition[endPosition] = position;
 		lastEndPosition = -1;

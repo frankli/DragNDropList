@@ -182,9 +182,6 @@ public class DragNDropListView extends ListView {
         if (actualPosition != INVALID_POSITION) {
             long id = getItemIdAtPosition(mStartPosition);
 
-            if (mDragNDropListener != null)
-                mDragNDropListener.onItemDrop(this, item, mStartPosition, actualPosition, id);
-
             Adapter adapter = getAdapter();
             DragNDropAdapter dndAdapter;
 
@@ -195,7 +192,9 @@ public class DragNDropListView extends ListView {
                 dndAdapter = (DragNDropAdapter)adapter;
             }
 
-            dndAdapter.onItemHover(this, item, mStartPosition, actualPosition, id);
+            dndAdapter.onItemHover(this, item, 
+            		mStartPosition - getHeaderViewsCount(), 
+            		calcEndPosition(actualPosition), id);
         }
 	}
 
@@ -225,7 +224,8 @@ public class DragNDropListView extends ListView {
             dndAdapter = (DragNDropAdapter)adapter;
         }
 
-        dndAdapter.onItemDrag(this, item, mStartPosition, id);
+        dndAdapter.onItemDrag(this, item, 
+        		mStartPosition - getHeaderViewsCount(), id);
 
 		item.setDrawingCacheEnabled(true);
 		
@@ -283,7 +283,9 @@ public class DragNDropListView extends ListView {
                 dndAdapter = (DragNDropAdapter)adapter;
             }
 
-            dndAdapter.onItemDrop(this, item, mStartPosition, endPosition, id);
+            dndAdapter.onItemDrop(this, item, 
+            		mStartPosition - getHeaderViewsCount(), 
+            		calcEndPosition(endPosition), id);
         }
 		
         mDragView.setVisibility(GONE);
@@ -300,6 +302,16 @@ public class DragNDropListView extends ListView {
         mStartPosition = INVALID_POSITION;
         
         invalidateViews(); // We have changed the adapter data, so change everything
+	}
+
+	private int calcEndPosition(int endPosition) {
+		int p = endPosition - getHeaderViewsCount();
+		if (p < 0) {
+			p = 0;
+		} else if (p >= getAdapter().getCount()) {
+			p = getAdapter().getCount() - 1;
+		}
+		return p;
 	}
 	
 	/**
